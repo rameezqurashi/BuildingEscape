@@ -42,8 +42,21 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s does not have a player input component!"), *(GetOwner()->GetName()));
 	}
+
+	InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+
+	InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 }
 
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
+}
+
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
+}
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -75,11 +88,4 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	
 	if (Hit.Actor != NULL)
 		UE_LOG(LogTemp, Warning, TEXT("Currently hitting %s"), *(Hit.GetActor()->GetName()));
-
-	InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
-}
-
-void UGrabber::Grab()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
 }

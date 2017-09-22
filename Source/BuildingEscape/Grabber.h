@@ -33,5 +33,5 @@ private:
 	UPhysicsHandleComponent* PhysicsHandle = NULL;
 	UInputComponent* InputComponent = NULL;
 	void Grab();
-
+	void Release();
 };
