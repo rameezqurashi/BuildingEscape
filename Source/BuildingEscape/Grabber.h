@@ -32,6 +32,19 @@ private:
 
 	UPhysicsHandleComponent* PhysicsHandle = NULL;
 	UInputComponent* InputComponent = NULL;
+
+	// Find attached physics handle
+	void FindPhysicsHandle();
+
+	// Bind grabber keys to attached input component
+	void BindGrabberKeys();
+
+	// Grab object within reach
 	void Grab();
+	
+	// Release grabbed object
 	void Release();
+
+	// Return hit for physics body within reach
+	const FHitResult GetNearestPhysicsBodyInReach();
 };

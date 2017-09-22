@@ -23,6 +23,13 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
+	FindPhysicsHandle();
+	BindGrabberKeys();
+
+}
+
+void UGrabber::FindPhysicsHandle()
+{
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (PhysicsHandle)
 	{
@@ -32,7 +39,10 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s does not have an associated physics handle!"), *(GetOwner()->GetName()));
 	}
+}
 
+void UGrabber::BindGrabberKeys()
+{
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (InputComponent)
 	{
@@ -51,6 +61,9 @@ void UGrabber::BeginPlay()
 void UGrabber::Grab()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
+
+	FHitResult Hit;
+	Hit = GetNearestPhysicsBodyInReach();
 }
 
 void UGrabber::Release()
@@ -58,24 +71,14 @@ void UGrabber::Release()
 	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
 }
 
-// Called every frame
-void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+const FHitResult UGrabber::GetNearestPhysicsBodyInReach()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	FRotator PlayerRotation;
 	FVector PlayerLocation;
 	FVector GrabberEndPoint;
 
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
 	GrabberEndPoint = PlayerLocation + (PlayerRotation.Vector() * Reach);
-
-	/// Get player's location and rotation
-//	UE_LOG(LogTemp, Warning, TEXT("Location: %s, Rotation: %s"),
-//		*(PlayerLocation.ToString()), *(PlayerRotation.ToString()));
-
-	/// Draw red debug line
-	DrawDebugLine(GetWorld(), PlayerLocation, GrabberEndPoint,
-		FColor(255, 0, 0), false, -1.0, 0, 10.0);
 
 	/// Get the object that our line is touching
 	FHitResult Hit;
@@ -85,7 +88,15 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		GrabberEndPoint,
 		ECollisionChannel::ECC_PhysicsBody,
 		FCollisionQueryParams(FName(TEXT("")), false, GetOwner()));
-	
+
 	if (Hit.Actor != NULL)
 		UE_LOG(LogTemp, Warning, TEXT("Currently hitting %s"), *(Hit.GetActor()->GetName()));
+
+	return Hit;
+}
+
+// Called every frame
+void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
