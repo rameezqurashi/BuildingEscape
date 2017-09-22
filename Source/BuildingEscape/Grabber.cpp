@@ -37,10 +37,23 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
 	GrabberEndPoint = PlayerLocation + (PlayerRotation.Vector() * Reach);
 
-	UE_LOG(LogTemp, Warning, TEXT("Location: %s, Rotation: %s"), 
-		*(PlayerLocation.ToString()), *(PlayerRotation.ToString()));
+	/// Get player's location and rotation
+//	UE_LOG(LogTemp, Warning, TEXT("Location: %s, Rotation: %s"),
+//		*(PlayerLocation.ToString()), *(PlayerRotation.ToString()));
 
+	/// Draw red debug line
 	DrawDebugLine(GetWorld(), PlayerLocation, GrabberEndPoint,
 		FColor(255, 0, 0), false, -1.0, 0, 10.0);
-}
 
+	/// Get the object that our line is touching
+	FHitResult Hit;
+
+	GetWorld()->LineTraceSingleByObjectType(Hit,
+		PlayerLocation,
+		GrabberEndPoint,
+		ECollisionChannel::ECC_PhysicsBody,
+		FCollisionQueryParams(FName(TEXT("")), false, GetOwner()));
+	
+	if (Hit.Actor != NULL)
+		UE_LOG(LogTemp, Warning, TEXT("Currently hitting %s"), *(Hit.GetActor()->GetName()));
+}
