@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Grabber.generated.h"
 
 
@@ -27,5 +29,9 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere)
 	float Reach = 100.0f;
-	
+
+	UPhysicsHandleComponent* PhysicsHandle = NULL;
+	UInputComponent* InputComponent = NULL;
+	void Grab();
+
 };
