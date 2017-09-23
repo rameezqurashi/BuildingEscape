@@ -27,6 +27,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	// Reach of the grabber arm
 	UPROPERTY(VisibleAnywhere)
 	float Reach = 100.0f;
 

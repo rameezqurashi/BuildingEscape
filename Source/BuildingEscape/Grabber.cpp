@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include <assert.h>
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -22,46 +23,27 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
-
 	FindPhysicsHandle();
 	BindGrabberKeys();
-
 }
 
 void UGrabber::FindPhysicsHandle()
 {
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandle)
-	{
-
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s does not have an associated physics handle!"), *(GetOwner()->GetName()));
-	}
+	assert(PhysicsHandle);
 }
 
 void UGrabber::BindGrabberKeys()
 {
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
-	if (InputComponent)
-	{
-
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s does not have a player input component!"), *(GetOwner()->GetName()));
-	}
+	assert(InputComponent);
 
 	InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
-
 	InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 }
 
 void UGrabber::Grab()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
-
 	FHitResult Hit;
 	Hit = GetNearestPhysicsBodyInReach();
 
@@ -75,8 +57,6 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
-
 	PhysicsHandle->ReleaseComponent();
 }
 
@@ -98,9 +78,6 @@ const FHitResult UGrabber::GetNearestPhysicsBodyInReach()
 		ECollisionChannel::ECC_PhysicsBody,
 		FCollisionQueryParams(FName(TEXT("")), false, GetOwner()));
 
-	if (Hit.Actor != NULL)
-		UE_LOG(LogTemp, Warning, TEXT("Currently hitting %s"), *(Hit.GetActor()->GetName()));
-
 	return Hit;
 }
 
@@ -109,6 +86,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// Set location of grabbed component
 	if (PhysicsHandle->GrabbedComponent != NULL)
 	{
 		FRotator PlayerRotation;
