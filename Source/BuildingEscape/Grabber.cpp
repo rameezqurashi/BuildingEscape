@@ -64,11 +64,20 @@ void UGrabber::Grab()
 
 	FHitResult Hit;
 	Hit = GetNearestPhysicsBodyInReach();
+
+	auto ComponentToGrab = Hit.GetComponent();
+
+	if (Hit.Actor != NULL)
+	{
+		PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, ComponentToGrab->GetOwner()->GetActorLocation());
+	}
 }
 
 void UGrabber::Release()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
+
+	PhysicsHandle->ReleaseComponent();
 }
 
 const FHitResult UGrabber::GetNearestPhysicsBodyInReach()
@@ -99,4 +108,16 @@ const FHitResult UGrabber::GetNearestPhysicsBodyInReach()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (PhysicsHandle->GrabbedComponent != NULL)
+	{
+		FRotator PlayerRotation;
+		FVector PlayerLocation;
+		FVector GrabberEndPoint;
+
+		GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
+		GrabberEndPoint = PlayerLocation + (PlayerRotation.Vector() * Reach);
+
+		PhysicsHandle->SetTargetLocation(PlayerLocation);
+	}
 }
