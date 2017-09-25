@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
+#include <assert.h>
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -18,8 +19,8 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::OpenDoor()
 {
 	// Set rotation
-	if (Owner)
-		Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
+	assert(Owner);
+	Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
 
 	OpenDoorTime = GetWorld()->GetTimeSeconds();
 }
@@ -27,8 +28,8 @@ void UOpenDoor::OpenDoor()
 void UOpenDoor::CloseDoor()
 {
 	// Set rotation
-	if (Owner)
-		Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
+	assert(Owner);
+	Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
 }
 
 // Called when the game starts
@@ -36,8 +37,8 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (Owner)
-		Owner = GetOwner();
+	Owner = GetOwner();
+	assert(Owner);
 }
 
 float UOpenDoor::GetTotalMassOfObjectsOnPlate()
