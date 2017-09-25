@@ -42,10 +42,12 @@ private:
 	ATriggerVolume* PressurePlate;
 
 	UPROPERTY(EditAnywhere)
+	float WeightToOpenDoor;
+
+	UPROPERTY(EditAnywhere)
 	float DelayTime = 1.0;
 
 	float OpenDoorTime = -1.0;
 
-	// Actor that can activate pressureplate
-	AActor* ActorThatOpens;
+	float GetTotalMassOfObjectsOnPlate();
 };
