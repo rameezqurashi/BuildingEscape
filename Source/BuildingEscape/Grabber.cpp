@@ -51,12 +51,14 @@ void UGrabber::Grab()
 
 	if (Hit.Actor != NULL)
 	{
+		assert(PhysicsHandle);
 		PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, ComponentToGrab->GetOwner()->GetActorLocation());
 	}
 }
 
 void UGrabber::Release()
 {
+	assert(PhysicsHandle);
 	PhysicsHandle->ReleaseComponent();
 }
 

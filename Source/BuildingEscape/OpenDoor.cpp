@@ -18,7 +18,8 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::OpenDoor()
 {
 	// Set rotation
-	Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
+	if (Owner)
+		Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
 
 	OpenDoorTime = GetWorld()->GetTimeSeconds();
 }
@@ -26,7 +27,8 @@ void UOpenDoor::OpenDoor()
 void UOpenDoor::CloseDoor()
 {
 	// Set rotation
-	Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
+	if (Owner)
+		Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
 }
 
 // Called when the game starts
@@ -34,7 +36,8 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Owner = GetOwner();
+	if (Owner)
+		Owner = GetOwner();
 }
 
 float UOpenDoor::GetTotalMassOfObjectsOnPlate()
@@ -43,7 +46,8 @@ float UOpenDoor::GetTotalMassOfObjectsOnPlate()
 
 	//
 	TArray <AActor*> OverlappingActors;
-	PressurePlate->GetOverlappingActors(OverlappingActors);
+	if (PressurePlate)
+		PressurePlate->GetOverlappingActors(OverlappingActors);
 
 	for (auto& OverlappingActor : OverlappingActors)
 	{

@@ -31,7 +31,7 @@ public:
 
 private:
 	// The owner of this door
-	AActor* Owner;
+	AActor* Owner = NULL;
 
 	// Door open angle
 	UPROPERTY(VisibleAnywhere)
@@ -39,7 +39,7 @@ private:
 
 	// Pressure plate to open door
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate;
+	ATriggerVolume* PressurePlate = NULL;
 
 	UPROPERTY(EditAnywhere)
 	float WeightToOpenDoor;
