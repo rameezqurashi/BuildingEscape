@@ -48,7 +48,6 @@ float UOpenDoor::GetTotalMassOfObjectsOnPlate()
 	for (auto& OverlappingActor : OverlappingActors)
 	{
 		TotalMass += OverlappingActor->GetRootPrimitiveComponent()->GetMass();
-		UE_LOG(LogTemp, Warning, TEXT("Actor(s) on Plate: %s"), *(OverlappingActor->GetName()));
 	}
 
 	return TotalMass;
@@ -62,7 +61,6 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (GetTotalMassOfObjectsOnPlate() >= WeightToOpenDoor)
 	{
 		OpenDoor();
-		UE_LOG(LogTemp, Warning, TEXT("Weight on Plate: %f"), GetTotalMassOfObjectsOnPlate());
 	}
     else if ((OpenDoorTime > 0.0) && (GetWorld()->GetTimeSeconds() > (OpenDoorTime + DelayTime)))
 		CloseDoor();
