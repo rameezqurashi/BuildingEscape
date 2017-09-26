@@ -18,13 +18,13 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::OpenDoor()
 {
 	// Open door request handled in Blueprint
-	OnOpenRequest.Broadcast();
+	OnOpen.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
 {
 	// Close door request handled in Blueprint
-	OnCloseRequest.Broadcast();
+	OnClose.Broadcast();
 }
 
 // Called when the game starts
