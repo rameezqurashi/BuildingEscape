@@ -15,18 +15,6 @@ UOpenDoor::UOpenDoor()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UOpenDoor::OpenDoor()
-{
-	// Open door request handled in Blueprint
-	OnOpen.Broadcast();
-}
-
-void UOpenDoor::CloseDoor()
-{
-	// Close door request handled in Blueprint
-	OnClose.Broadcast();
-}
-
 // Called when the game starts
 void UOpenDoor::BeginPlay()
 {
@@ -60,9 +48,9 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 	if (GetTotalMassOfObjectsOnPlate() >= WeightToOpenDoor)
 	{
-		OpenDoor();
+		OnOpen.Broadcast();
 	}
     else
-		CloseDoor();
+		OnClose.Broadcast();
 }
 

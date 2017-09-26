@@ -19,10 +19,6 @@ public:
 	UOpenDoor();
 
 protected:
-	void OpenDoor();
-
-	void CloseDoor();
-
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
