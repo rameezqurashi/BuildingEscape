@@ -6,7 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
-#include <assert.h>
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -30,13 +29,13 @@ void UGrabber::BeginPlay()
 void UGrabber::FindPhysicsHandle()
 {
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	assert(PhysicsHandle);
+	check(PhysicsHandle);
 }
 
 void UGrabber::BindGrabberKeys()
 {
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
-	assert(InputComponent);
+	check(InputComponent);
 
 	InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 	InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
@@ -51,14 +50,14 @@ void UGrabber::Grab()
 
 	if (Hit.Actor != NULL)
 	{
-		assert(PhysicsHandle);
+		check(PhysicsHandle);
 		PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, ComponentToGrab->GetOwner()->GetActorLocation());
 	}
 }
 
 void UGrabber::Release()
 {
-	assert(PhysicsHandle);
+	check(PhysicsHandle);
 	PhysicsHandle->ReleaseComponent();
 }
 

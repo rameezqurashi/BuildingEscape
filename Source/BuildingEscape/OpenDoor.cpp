@@ -6,7 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
-#include <assert.h>
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -19,16 +18,17 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::OpenDoor()
 {
 	// Set rotation
-	assert(Owner);
-	Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
-
+//	check(Owner);
+//	Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
+//
 	OpenDoorTime = GetWorld()->GetTimeSeconds();
+	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
 {
 	// Set rotation
-	assert(Owner);
+	check(Owner);
 	Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
 }
 
@@ -38,7 +38,7 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
 	
 	Owner = GetOwner();
-	assert(Owner);
+	check(Owner);
 }
 
 float UOpenDoor::GetTotalMassOfObjectsOnPlate()
@@ -47,8 +47,8 @@ float UOpenDoor::GetTotalMassOfObjectsOnPlate()
 
 	//
 	TArray <AActor*> OverlappingActors;
-	if (PressurePlate)
-		PressurePlate->GetOverlappingActors(OverlappingActors);
+	check(PressurePlate);
+	PressurePlate->GetOverlappingActors(OverlappingActors);
 
 	for (auto& OverlappingActor : OverlappingActors)
 	{
