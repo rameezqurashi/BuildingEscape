@@ -17,19 +17,14 @@ UOpenDoor::UOpenDoor()
 
 void UOpenDoor::OpenDoor()
 {
-	// Set rotation
-//	check(Owner);
-//	Owner->SetActorRotation(FRotator(0.0, OpenAngle, 0.0));
-//
-	OpenDoorTime = GetWorld()->GetTimeSeconds();
+	// Open door request handled in Blueprint
 	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
 {
-	// Set rotation
-	check(Owner);
-	Owner->SetActorRotation(FRotator(0.0, 0.0, 0.0));
+	// Close door request handled in Blueprint
+	OnCloseRequest.Broadcast();
 }
 
 // Called when the game starts
@@ -67,7 +62,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	{
 		OpenDoor();
 	}
-    else if ((OpenDoorTime > 0.0) && (GetWorld()->GetTimeSeconds() > (OpenDoorTime + DelayTime)))
+    else
 		CloseDoor();
 }
 
